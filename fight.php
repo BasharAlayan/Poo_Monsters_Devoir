@@ -1,14 +1,17 @@
 <?php
 
 require __DIR__ . '/functions.php';
+
+
 $monsters = getMonsters();
 
-$firstMonsterName = isset($_POST['first_monster_name']) ? $_POST['first_monster_name'] : null; //isset cvd existe if existe ==> il prend $_POST['first_monster_name'] si non il prend null
+$firstMonsterName = isset($_POST['first_monster_name']) ? $_POST['first_monster_name'] : null;
 $secondMonsterName = isset($_POST['second_monster_name']) ? $_POST['second_monster_name'] : null;
 
 /**
  * On redirige l'utilisateur vers la page d'accueil dans le cas où le formulaire est vide
  */
+
 if (is_null($firstMonsterName) || is_null($secondMonsterName)) {
     header('Location: /index.php?error=missing_data');
     die;
@@ -18,14 +21,31 @@ if (is_null($firstMonsterName) || is_null($secondMonsterName)) {
  * On redirige l'utilisateur vers la page d'accueil si les monstres n'existent pas dans notre tableau
  */
 if (!isset($monsters[$firstMonsterName]) || !isset($monsters[$secondMonsterName])) {
+    
     header('Location: /index.php?error=bad_ships');
     die;
 }
 
 $firstMonster = $monsters[$firstMonsterName];
+
+$name1 = $firstMonster->get_name();
+$strength1 = $firstMonster->get_strength();
+$type1 = $firstMonster->get_type();
+$life1 = $firstMonster->get_life();
+
+$firstOne=array("name" => $name1,"strength" => $strength1,"type" =>$type1,"life"=>$life1);
+
+
 $secondMonster = $monsters[$secondMonsterName];
 
-$fightResult = fight($firstMonster, $secondMonster);
+$name2 = $secondMonster->get_name();
+$strength2 = $secondMonster->get_strength();
+$type2 = $secondMonster->get_type();
+$life2 = $secondMonster->get_life();
+
+$secondOne=array("name" => $name2,"strength" => $strength2,"type" =>$type2,"life"=>$life2);
+
+$fightResult = fight($firstOne, $secondOne);
 
 ?>
 
@@ -79,9 +99,9 @@ $fightResult = fight($firstMonster, $secondMonster);
                     <h2 class="text-center">The Matchup:</h2>
                     <p class="text-center">
                         <br>
-                        <?php echo $firstMonster['name']; ?>
+                        <?php echo $name1; ?>
                         VS.
-                        <?php echo $secondMonster['name']; ?>
+                        <?php echo $name2; ?>
                     </p>
 
                     <h3 class="text-center">Winner:

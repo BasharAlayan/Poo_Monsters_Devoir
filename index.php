@@ -1,14 +1,10 @@
 <?php
 
-require __DIR__ . '/functions.php';//directory , appeler la page functions.php
-//require erreur si le fichier n'existe pas
-//include continue l'execution de prog meme si le fichier n'existe pas
+require __DIR__ . '/functions.php';
 
-    $monsters = getMonsters();
-    
- 
-                      
+$monsters = getMonsters();
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
     <head>
@@ -22,7 +18,7 @@ require __DIR__ . '/functions.php';//directory , appeler la page functions.php
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="#">Monsters League</a>
+            <a class="navbar-brand" href="index.php">Monsters League</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -59,28 +55,25 @@ require __DIR__ . '/functions.php';//directory , appeler la page functions.php
                     </tr>
                 </thead>
                 <tbody>
-                <?php foreach ($monsters as $monster) 
-                    { 
-                ?>
-                    <tr>
-                        <td><?php echo $monster['name'];?></td>
-                        <td><?php echo $monster['strength'];?></td>
-                        <td><?php echo $monster['life'];?></td>
-                        <td><?php echo $monster['type'];?></td>
-                    </tr>
-                <?php 
-                    } 
-                ?>    
+                    <?php foreach ($monsters as $monster) { ?>
+                        <tr>
+                            <td><?php echo $monster->get_name(); ?></td>
+                            <td><?php echo $monster->get_strength(); ?></td>
+                            <td><?php echo $monster->get_life(); ?></td>
+                            <td><?php echo $monster->get_type(); ?></td>
+                        </tr>
+                    <?php } ?>
                 </tbody>
             </table>
+
             <div class="row border p-3">
                 <div class="form-group col-md-6 offset-md-3">
                     <form method="POST" action="fight.php">
                         <h2 class="text-center">The battle</h2>
                         <select class=" form-control" name="first_monster_name">
                             <option value="">Choose a Monster</option>
-                            <?php foreach ($monsters as $key => $monster) {//pour les clés d'un tableau et monster est la donnée ?>
-                                <option value="<?php echo $key; ?>"><?php echo $monster['name']; ?></option>
+                            <?php foreach ($monsters as $key => $monster) { ?>
+                                <option value="<?php echo $key; ?>"><?php echo $monster->get_name(); ?></option>
                             <?php } ?>
                         </select>
                         <br>
@@ -89,7 +82,7 @@ require __DIR__ . '/functions.php';//directory , appeler la page functions.php
                         <select class="form-control" name="second_monster_name">
                             <option value="">Choose a Monster</option>
                             <?php foreach ($monsters as $key => $monster) { ?>
-                                <option value="<?php echo $key; ?>"><?php echo $monster['name']; ?></option>
+                                <option value="<?php echo $key; ?>"><?php echo $monster->get_name(); ?></option>
                             <?php } ?>
                         </select>
                         <br>

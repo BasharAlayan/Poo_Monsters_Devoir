@@ -26,18 +26,7 @@
         $monster4->set_life(1500);
         $monster4->set_type("Fire");
         $monsters=[$monster1,$monster2,$monster3,$monster4];
-        $i=0;
-        $array=array();
-        foreach ($monsters as $monster)
-        { 
-            $name=$monster->get_name();  
-            $strength=$monster->get_strength();
-            $life=$monster->get_life();  
-            $type=$monster->get_type();
-            $array[$i]=array('name'=>$name,'strength'=>$strength,'life'=>$life,'type'=>$type);
-            $i=$i+1;
-        }
-        return $array;
+        return $monsters;
     }
 
 /**
@@ -70,4 +59,5 @@ function fight(array $firstMonster, array $secondMonster)
         'winner' => $winner,
         'looser' => $looser,
     );
-} 
+}
+ 
