@@ -2,27 +2,26 @@
 require __DIR__ . '/functions.php';
 
 
-$firstMonsterid = isset($_POST['first_monster_id']) ? $_POST['first_monster_id'] : null;
-$secondMonsterid = isset($_POST['second_monster_id']) ? $_POST['second_monster_id'] : null;
-$Monsters=getAllMonsters();
+$MonsterId = isset($_POST['Delete_Monster']) ? $_POST['Delete_Monster'] : null;
+
+
 /**
  * On redirige l'utilisateur vers la page d'accueil dans le cas où le formulaire est vide
  */
-if (is_null($firstMonsterid) || is_null($secondMonsterid)) {
+if (is_null($MonsterId)) {
     header('Location: /index.php?error=missing_data');
     die;
 }
+
 /**
  * On redirige l'utilisateur vers la page d'accueil si les monstres n'existent pas dans notre tableau
  */
-if ($firstMonsterid == "" || $secondMonsterid=="") {
-   header('Location: /index.php?error=bad_ships');
-   die;
+if ($MonsterId=="") {
+    header('Location: /index.php?error=bad_ships');
+    die;
 }
-
-        $firstMonster = getMonster($firstMonsterid);
-        $secondMonster = getMonster($secondMonsterid);
-        $fightResult = fight($firstMonster, $secondMonster);
+        $DeleteMonster = getMonster($MonsterId);
+        $Delete = DeleteMonster($DeleteMonster);
 ?>
 
 <!DOCTYPE html>
@@ -66,29 +65,13 @@ if ($firstMonsterid == "" || $secondMonsterid=="") {
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h1>Monster League fight result</h1>
+                    <h1 class="text-center">You Deleted the Monster successfully</h1>
                     <hr class="my-4">
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <h2 class="text-center">The Matchup:</h2>
-                    <p class="text-center">
-                        <br>
-                        <?php echo $firstMonster['name']; ?>
-                        VS.
-                        <?php echo $secondMonster['name']; ?>
-                    </p>
-
-                    <h3 class="text-center">Winner:
-                        <?php if ($fightResult['winner']) { ?>
-                            <?php echo $fightResult['winner']['name']; ?>
-                        <?php } else { ?>
-                            Nobody
-                        <?php } ?>
-                    </h3>
-
-                    <a href="index.php"><p class="text-center"><i class="fa fa-undo"></i> Fight again!</p></a>
+                    <a href="Delete_Monster.php"><p class="text-center"><i class="fa fa-undo"></i> Delete another Monster</p></a>
                 </div>
             </div>
         </div>

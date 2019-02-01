@@ -1,30 +1,8 @@
+
 <?php
 require __DIR__ . '/functions.php';
-
-
-$firstMonsterid = isset($_POST['first_monster_id']) ? $_POST['first_monster_id'] : null;
-$secondMonsterid = isset($_POST['second_monster_id']) ? $_POST['second_monster_id'] : null;
 $Monsters=getAllMonsters();
-/**
- * On redirige l'utilisateur vers la page d'accueil dans le cas où le formulaire est vide
- */
-if (is_null($firstMonsterid) || is_null($secondMonsterid)) {
-    header('Location: /index.php?error=missing_data');
-    die;
-}
-/**
- * On redirige l'utilisateur vers la page d'accueil si les monstres n'existent pas dans notre tableau
- */
-if ($firstMonsterid == "" || $secondMonsterid=="") {
-   header('Location: /index.php?error=bad_ships');
-   die;
-}
-
-        $firstMonster = getMonster($firstMonsterid);
-        $secondMonster = getMonster($secondMonsterid);
-        $fightResult = fight($firstMonster, $secondMonster);
 ?>
-
 <!DOCTYPE html>
 <html lang="fr">
     <head>
@@ -60,38 +38,28 @@ if ($firstMonsterid == "" || $secondMonsterid=="") {
         <div class="jumbotron">
             <h1 class="display-4">Hello, world!</h1>
             <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+            <p class="lead"></p>
             <hr class="my-4">
         </div>
 
         <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <h1>Monster League fight result</h1>
-                    <hr class="my-4">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <h2 class="text-center">The Matchup:</h2>
-                    <p class="text-center">
-                        <br>
-                        <?php echo $firstMonster['name']; ?>
-                        VS.
-                        <?php echo $secondMonster['name']; ?>
-                    </p>
-
-                    <h3 class="text-center">Winner:
-                        <?php if ($fightResult['winner']) { ?>
-                            <?php echo $fightResult['winner']['name']; ?>
-                        <?php } else { ?>
-                            Nobody
+            <h2 class="text-center">Select one monster</h2>
+        </div>
+        <div class="row border p-3">
+            <div class="form-group col-md-6 offset-md-3">
+                <form method="POST" action="Delete_Monster2.php">
+                    <select class=" form-control" name="Delete_Monster">
+                        <option value="">Choose a Monster</option>
+                        <?php foreach ($Monsters as $Monster) {//pour les clés d'un tableau et monster est la donnée ?>
+                        <option value="<?php echo $Monster['id']; ?>"><?php echo $Monster['name']; ?></option>
                         <?php } ?>
-                    </h3>
-
-                    <a href="index.php"><p class="text-center"><i class="fa fa-undo"></i> Fight again!</p></a>
-                </div>
+                    </select>
+                    <br>
+                    <button class="btn btn-md btn-danger center-block"  class="btn" type="submit">Delete</button>
+                </form>    
             </div>
         </div>
+                       
 
         <footer>
             <div class="container">

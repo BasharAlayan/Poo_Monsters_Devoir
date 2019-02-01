@@ -1,32 +1,20 @@
 <?php
-    require __DIR__ . '/monterpooex.php';
 
-    function getMonsters(){
-        $monster1=new Monster();
-        $monster1->set_name("Domovoï");
-        $monster1->set_strength(30);
-        $monster1->set_life(300);
-        $monster1->set_type("Water");
-
-        $monster2=new Monster();
-        $monster2->set_name("Wendigos");
-        $monster2->set_strength(100);
-        $monster2->set_life(500);
-        $monster2->set_type("Earth");
-
-        $monster3=new Monster();
-        $monster3->set_name("Thunderbird");
-        $monster3->set_strength(400);
-        $monster3->set_life(500);
-        $monster3->set_type("Air");
-
-        $monster4=new Monster();
-        $monster4->set_name("Sirrush");
-        $monster4->set_strength(250);
-        $monster4->set_life(1500);
-        $monster4->set_type("Fire");
-        $monsters=[$monster1,$monster2,$monster3,$monster4];
-        return $monsters;
+    function getMonster($MonsterId){
+        $pdo=new PDO("mysql:dbname=monsters;host=localhost","root","");
+        $requet = $pdo->prepare("SELECT * from monster WHERE id='$MonsterId'");
+        $requet->execute();
+        $rows = $requet->fetchAll();
+        foreach ($rows as $row) {
+            $id=$row['id'];
+            $name=$row['name'];
+            $strength=$row['Strength'];
+            $life=$row['Life'];
+            $type=$row['Type'];
+            return array('id' => $id,'name' => $name, 'strength' => $strength,'life' =>$life,'type' => $type); 
+        }  
+        
+        
     }
 
 /**
@@ -34,30 +22,57 @@
  *
  * @return array With keys winning_ship, losing_ship & used_jedi_powers
  */
-function fight(array $firstMonster, array $secondMonster)
-{
-    $firstMonsterLife = $firstMonster['life'];
-    $secondMonsterLife = $secondMonster['life'];
+    function fight(array $firstMonster, array $secondMonster)
+    {
+        $firstMonsterLife = $firstMonster['life'];
+        $secondMonsterLife = $secondMonster['life'];
 
-    while ($firstMonsterLife > 0 && $secondMonsterLife > 0) {
-        $firstMonsterLife = $firstMonsterLife - $secondMonster['strength'];
-        $secondMonsterLife = $secondMonsterLife - $firstMonster['strength'];
+        while ($firstMonsterLife > 0 && $secondMonsterLife > 0) {
+            $firstMonsterLife = $firstMonsterLife - $secondMonster['strength'];
+            $secondMonsterLife = $secondMonsterLife - $firstMonster['strength'];
+        }
+
+        if ($firstMonsterLife <= 0 && $secondMonsterLife <= 0) {
+            $winner = null;
+            $looser = null;
+        } elseif ($firstMonsterLife <= 0) {
+            $winner = $secondMonster;
+            $looser = $firstMonster;
+        } else {
+            $winner = $firstMonster;
+            $looser = $secondMonster;
+        }
+
+        return array(
+            'winner' => $winner,
+            'looser' => $looser,
+        );
     }
 
-    if ($firstMonsterLife <= 0 && $secondMonsterLife <= 0) {
-        $winner = null;
-        $looser = null;
-    } elseif ($firstMonsterLife <= 0) {
-        $winner = $secondMonster;
-        $looser = $firstMonster;
-    } else {
-        $winner = $firstMonster;
-        $looser = $secondMonster;
+    function DeleteMonster(array $monster){
+        $pdo=new PDO("mysql:dbname=monsters;host=localhost","root","");
+        //$Delete_Monster=$_POST['Delete_Monster'];
+        $Delete_Monster=$monster['id'];
+        $sql="DELETE FROM monster WHERE id=$Delete_Monster";
+        $requet = $pdo->prepare($sql);
+        $execute=$requet->execute();
     }
 
-    return array(
-        'winner' => $winner,
-        'looser' => $looser,
-    );
-}
- 
+    function getAllMonsters(){
+        $pdo=new PDO("mysql:dbname=monsters;host=localhost","root","");
+        $requet = $pdo->prepare("SELECT * from monster"); 
+        $requet->execute();
+        $rows=$requet->fetchAll();
+        $i=0;
+        $array=array();
+        foreach ($rows as $row) {
+            $id=$row['id'];
+            $name=$row['name'];
+            $strength=$row['Strength'];
+            $life=$row['Life'];
+            $type=$row['Type'];
+        $array[$i]=array('id' =>$id,'name' => $name, 'strength' => $strength,'life' =>$life,'type' => $type);  
+        $i=$i+1;  
+        }  
+        return $array; 
+    } 
