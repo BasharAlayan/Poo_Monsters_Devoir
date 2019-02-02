@@ -1,8 +1,24 @@
-
 <?php
 require __DIR__ . '/functions.php';
-$Monsters=getAllMonsters();
+
+
+$MonsterId = isset($_POST['Delet_Monster_id']) ? $_POST['Delet_Monster_id'] : null;
+
+/**
+ * On redirige l'utilisateur vers la page d'accueil dans le cas où le formulaire est vide
+ */
+if (is_null($MonsterId)) {
+   // header('Location: /index.php?error=missing_data');
+    die;
+}
+
+/**
+ * On redirige l'utilisateur vers la page d'accueil si les monstres n'existent pas dans notre tableau
+ */
+        $DeleteMonster = getMonster($MonsterId);
+        $Delete = DeleteMonster($DeleteMonster);
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
     <head>
@@ -38,28 +54,22 @@ $Monsters=getAllMonsters();
         <div class="jumbotron">
             <h1 class="display-4">Hello, world!</h1>
             <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-            <p class="lead"></p>
             <hr class="my-4">
         </div>
 
         <div class="container">
-            <h2 class="text-center">Select one monster</h2>
-        </div>
-        <div class="row border p-3">
-            <div class="form-group col-md-6 offset-md-3">
-                <form method="POST" action="Delete_Monster2.php">
-                    <select class=" form-control" name="Delete_Monster">
-                        <option value="">Choose a Monster</option>
-                        <?php foreach ($Monsters as $Monster) {//pour les clés d'un tableau et monster est la donnée ?>
-                        <option value="<?php echo $Monster['id']; ?>"><?php echo $Monster['name']; ?></option>
-                        <?php } ?>
-                    </select>
-                    <br>
-                    <button class="btn btn-md btn-danger center-block"  class="btn" type="submit">Delete</button>
-                </form>    
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="text-center">You Deleted the Monster successfully</h1>
+                    <hr class="my-4">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <a href="index.php"><p class="text-center"><i class="fa fa-undo"></i> Delete another Monster</p></a>
+                </div>
             </div>
         </div>
-                       
 
         <footer>
             <div class="container">

@@ -14,6 +14,8 @@ $Monsters=getAllMonsters();
         <!-- CSS files -->
         <link rel="stylesheet" href="bootstrap-4.1.3-dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -51,6 +53,7 @@ $Monsters=getAllMonsters();
                         <th>Strength</th>
                         <th>Life</th>
                         <th>Type</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -62,16 +65,16 @@ $Monsters=getAllMonsters();
                         <td><?php echo $Monster['strength'];?></td>
                         <td><?php echo $Monster['life'];?></td>
                         <td><?php echo $Monster['type'];?></td>
+                        <td><form method="POST" action="Delete_Monster.php"> 
+                            <button type="submit" name="Delet_Monster_id" class="btn btn-md btn-danger center-block" value="<?php echo $Monster['id']; ?>"><dev class="fa fa-trash"></dev></button></form>
+                        </td> 
                     </tr>
                 <?php 
                     } 
                 ?>    
                 </tbody>
+            </table>    
 
-            </table>
-            
-            <form method="POST" action="Delete_Monster.php"> <button class="btn btn-md btn-danger center-block" type="submit">Delete Monster</button></form>
-            
             <div class="row border p-3">
                 <div class="form-group col-md-6 offset-md-3">
                     <form method="POST" action="fight.php">
@@ -79,7 +82,9 @@ $Monsters=getAllMonsters();
                         <select class=" form-control" name="first_monster_id">
                             <option value="">Choose a Monster</option>
                             <?php foreach ($Monsters as $Monster) {//pour les clés d'un tableau et monster est la donnée ?>
-                                <option value="<?php echo $Monster['id']; ?>"><?php echo $Monster['name']; ?></option>
+                                <option value="<?php echo $Monster['id']; ?>"><?php echo $Monster['name']; ?>                                    
+                                </option>
+
                             <?php } ?>
                         </select>
                         <br>
